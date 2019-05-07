@@ -20,6 +20,8 @@ From this point, invoking a `kitchen` function which might reference a VM will p
 
 On [`converge`][2], I observe `./.kitchen/kitchen-vagrant/` directory created with a subdirectory for the `$vm_name` and a `$vm_name` file created in the previously mentioned `/log` directory.
 
+> **NOTE** if you delete the `./.kitchen/` directory manually, kitchen will not be able to `destroy` the vm and you will need to do so manually from the virtualbox interface. 
+
 ## MVPG
 
 Coming Soon! Deploy PostgreSQL!
