@@ -7,3 +7,6 @@ platforms:
 
 suites:
   - name: jtv  # just_the_vm
+  - name: mvpg # minimum viable postgres
+    run_list: 
+    - recipe[yes-chef::default]
