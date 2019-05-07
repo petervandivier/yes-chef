@@ -24,7 +24,20 @@ On [`converge`][2], I observe `./.kitchen/kitchen-vagrant/` directory created wi
 
 ## MVPG
 
-Coming Soon! Deploy PostgreSQL!
+As seen at `dbb5992f313e7d89ab5c7397692a3bb9e329c234`, add the following items to deploy a default PostgreSQL to your VM
+
+* ./Berksfile
+* ./metadata.rb
+* ./recipes/default.rb
+
+Adding these files adds the following transparent dependencies. 
+
+* [sous-chefs/postgresql][3] - the community cookbook for postgres, as indexed in https://supermarket.chef.io, which we declare in our `Berksfile`
+* [`yum`][4] - given that we're only working with Centos-7.2, the `postgresql` cookbook invokes `yum`
+* [`berks`][5] - berks is a new `exe` with its own args. `kitchen converge` with a Berksfile present will create a corresponding `Berksfile.lock` file
 
 [1]: https://kitchen.ci/
 [2]: https://kitchen.ci/docs/getting-started/running-converge/
+[3]: https://github.com/sous-chefs/postgresql
+[4]: https://en.wikipedia.org/wiki/Yum_(software)
+[5]: https://docs.chef.io/berkshelf.html
