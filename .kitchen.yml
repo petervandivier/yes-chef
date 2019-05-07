@@ -1,0 +1,9 @@
+---
+driver:
+  name: vagrant
+
+platforms:
+  - name: centos-7.2
+
+suites:
+  - name: jtv  # just_the_vm
