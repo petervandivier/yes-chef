@@ -1,3 +1,1 @@
-name 'yes-chef'
-
-depends 'postgresql'
+name 'yes_chef'

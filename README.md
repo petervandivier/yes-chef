@@ -1,4 +1,4 @@
-# yes-chef
+# Yes, Chef!
 
 I'm new to the [kitchen][1] and I've been having some trouble keeping track of my recipes. To help me keep it straight, this repo is to set up a few snapshots of the minimum surface config needed to properly cook baseline configurations. 
 
@@ -26,6 +26,8 @@ On [`converge`][2], I observe `./.kitchen/kitchen-vagrant/` directory created wi
 
 > Minimum Viable PostgreSQL
 
+### Community Cookbook
+
 As seen at `dbb5992f313e7d89ab5c7397692a3bb9e329c234`, add the following items to deploy a default PostgreSQL to your VM
 
 * ./Berksfile
@@ -38,6 +40,26 @@ Adding these files adds the following transparent dependencies.
 * [`yum`][4] - given that we're only working with Centos-7.2, the `postgresql` cookbook invokes `yum`
 * [`berks`][5] - berks is a new `exe` with its own args. `kitchen converge` with a Berksfile present will create a corresponding `Berksfile.lock` file
     - note that the encoding of the `.lock` file may vary between hosts/platforms, even when the content remains consistent
+
+### Roll your own
+
+I got cross eyed trying to figure out how to use the community cookbook, so now we remove the dependecy! The last commit on which the community cookbook is referenced is `13d27dcec853e094b7e9acfaba4151e0cccab4c6`. 
+
+<!-- Secret HT @kingcdavid for literally _all the work_ plus plenty of hand-holding -->
+
+```sh
+[vagrant@jtv-centos-72 ~]$ yum list | grep postgres
+```
+
+Given the baseline packages available in `yum` on the centos image we're using, we can invoke the `postgresql-server` package directly. This unpacks the `postgresql-setup` bash script and adds it to the PATH inside the VM.
+
+We can remove the `Berksfile` at this stage (not sure why atm :shrug:).
+
+### TODO: PostgreSQL >9
+
+The version of postgres installed atm is 9.2, this is unnaceptabru
+
+The community cookbook does some mind-bendy service calls to determine the proper packages to pull, :crossed_fingers: we don't need to reconstruct that...
 
 ## Connecting to PostgreSQL on your VM
 
