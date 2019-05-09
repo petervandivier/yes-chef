@@ -37,6 +37,7 @@ Adding these files adds the following transparent dependencies.
 * [sous-chefs/postgresql][3] - the community cookbook for postgres, as indexed in https://supermarket.chef.io, which we declare in our `Berksfile`
 * [`yum`][4] - given that we're only working with Centos-7.2, the `postgresql` cookbook invokes `yum`
 * [`berks`][5] - berks is a new `exe` with its own args. `kitchen converge` with a Berksfile present will create a corresponding `Berksfile.lock` file
+    - note that the encoding of the `.lock` file may vary between hosts/platforms, even when the content remains consistent
 
 ## Connecting to PostgreSQL on your VM
 
