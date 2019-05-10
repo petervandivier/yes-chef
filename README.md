@@ -43,7 +43,7 @@ Adding these files adds the following transparent dependencies.
 
 ### Roll your own
 
-I got cross eyed trying to figure out how to use the community cookbook, so now we remove the dependecy! The last commit on which the community cookbook is referenced is `13d27dcec853e094b7e9acfaba4151e0cccab4c6`. 
+I got cross eyed trying to figure out how to use the community cookbook, so now we remove the dependency! The last commit on which the community cookbook is referenced is `13d27dcec853e094b7e9acfaba4151e0cccab4c6`. 
 
 <!-- Secret HT @kingcdavid for literally _all the work_ plus plenty of hand-holding -->
 
@@ -53,7 +53,7 @@ I got cross eyed trying to figure out how to use the community cookbook, so now 
 
 Given the baseline packages available in `yum` on the centos image we're using, we can invoke the `postgresql-server` package directly. This unpacks the `postgresql-setup` bash script and adds it to the PATH inside the VM.
 
-We can remove the `Berksfile` at this stage (not sure why atm :shrug:).
+We can remove the `Berksfile` at this stage (not sure why atm ¯\\\_(ツ)_/¯).
 
 ### TODO: PostgreSQL >9
 
@@ -82,6 +82,15 @@ Use these values on the <kbd>SSH Tunnel</kbd> as shown below to connect "as norm
 
 ![mvpg-pgadmin-ssh-tunnel](/doc/img/mvpg-pgadmin-ssh-tunnel.jpg)
 
+It appears the following record on [pg_hba.conf][7] corresponds to this access management. 
+
+```ascii
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+host    all             all             ::1/128                 trust
+```
+
+[`trust`][8] is the most permissive access level and will confer access with a blank password for all users with the above configuration.  
+
 ## Port Forwarding
 
 TODO: Port forwarding & pg_hba.conf
@@ -92,3 +101,5 @@ TODO: Port forwarding & pg_hba.conf
 [4]: https://en.wikipedia.org/wiki/Yum_(software)
 [5]: https://docs.chef.io/berkshelf.html
 [6]: https://www.pgadmin.org/
+[7]: https://www.postgresql.org/docs/current/auth-pg-hba-conf.html
+[8]: https://www.postgresql.org/docs/current/auth-trust.html
