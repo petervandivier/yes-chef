@@ -4,8 +4,15 @@ package 'postgresql-server' do
 end
 
 base_dir = '/var/lib/pgsql/data'
+bkp_dir = '/var/lib/pgsql/backup'
 
 directory "#{base_dir}" do
+    owner 'postgres'
+    group 'postgres'
+    action :create
+end
+
+directory "#{bkp_dir}" do
     owner 'postgres'
     group 'postgres'
     action :create

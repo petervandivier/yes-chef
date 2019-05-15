@@ -67,6 +67,8 @@ We now have a viable, fully featured database instance. We can ssh onto the vm t
 
 How though, would you connect with an IDE? Surely you don't want to [_only ever ssh_](https://www.youtube.com/watch?v=zGxwbhkDjZM).
 
+### SSH Tunnelling
+
 Assuming you are running [PG Admin][6], you can now connect "as normal" with the addition of the information found in `./.kitchen/$vm_name.yml`, for example:
 
 ```yml
@@ -91,9 +93,30 @@ host    all             all             ::1/128                 trust
 
 [`trust`][8] is the most permissive access level and will confer access with a blank password for all users with the above configuration.  
 
-## Port Forwarding
+### Port Forwarding
 
 TODO: Port forwarding & pg_hba.conf
+
+## PITR
+
+> Point-In-Time-Recovery
+
+Before I start [rubber-ducking :duck:][9] through this, one main assumption should be voiced that it took me a while to arrive at:
+
+> For PITR purposes, a Postgres "cluster" is analogous to a Microsoft "database"
+> 
+> For all other purposes, a Postgres "cluster" is analogous to a Microsoft "instance"
+> 
+> The scope of the write-ahead-log (WAL) <sup>**1**</sup> is the `$UNIT$` against which a `RESTORE $UNIT$ TO $TIME$` command is executed. MS manages this per-database; postgres does this per-cluster and databases share the WAL.
+
+Both MS & Postgres contain multiple databases per instance/cluster in their own vocabulary. MS executes PITR against a single DB using its own dedicated WAL <sup>**2**</sup>. The "same command" in postgres applies to a cluster of multiple databases which share a common WAL. 
+
+For example:
+
+---
+
+<sup>**1**: Good (optional) reading: [ARIES whitepaper][9]</sup>
+<sup>**2**: Note that "log file", "transaction log", or "tran log" is the verbiage most often used when referring to the MS Write-Ahead-Log (WAL). For consistencies sake (and to follow the example of the ARIES whitepaper), I will try to use WAL cosistently here even when referring to an MSSQL transaction log file backup chain.</sup>
 
 [1]: https://kitchen.ci/
 [2]: https://kitchen.ci/docs/getting-started/running-converge/
@@ -103,3 +126,6 @@ TODO: Port forwarding & pg_hba.conf
 [6]: https://www.pgadmin.org/
 [7]: https://www.postgresql.org/docs/current/auth-pg-hba-conf.html
 [8]: https://www.postgresql.org/docs/current/auth-trust.html
+[9]: https://en.wikipedia.org/wiki/Rubber_duck_debugging
+[10]: https://people.eecs.berkeley.edu/~brewer/cs262/Aries.pdf
+
