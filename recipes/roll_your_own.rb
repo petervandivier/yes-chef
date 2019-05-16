@@ -18,6 +18,8 @@ directory "#{bkp_dir}" do
     action :create
 end
 
+# TODO initdb w/o starting service binaries?
+# need to start via systemd to :enable, :reload properly 
 execute "postgresql-setup initdb" do
     user "postgres"
     not_if { ::File.exist?("#{base_dir}/PG_VERSION")}

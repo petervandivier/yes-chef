@@ -1,0 +1,3 @@
+
+restore_command      = 'cp /var/lib/pgsql/backup/%f %p'
+recovery_target_time = '' # 'YYYY-MM-DD hh:mm:ss UTC'
