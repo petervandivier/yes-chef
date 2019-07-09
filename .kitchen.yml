@@ -3,10 +3,10 @@ driver:
   name: vagrant
 
 platforms:
-  - name: centos-7.2
+  - name: centos-7.6
 
 suites:
   - name: jtv  # just_the_vm
   - name: mvpg # minimum viable postgres
     run_list: 
-      - recipe[yes_chef::roll_your_own]
+      - recipe[yes_chef::pg10]
