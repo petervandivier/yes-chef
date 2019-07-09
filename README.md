@@ -107,7 +107,7 @@ Before I start [rubber-ducking :duck:][9] through this, one main assumption shou
 > 
 > For all other purposes, a Postgres "cluster" is analogous to a Microsoft "instance"
 > 
-> The scope of the write-ahead-log (WAL) <sup>**1**</sup> is the `$UNIT$` against which a `RESTORE $UNIT$ TO $TIME$` command is executed. MS manages this per-database; postgres does this per-cluster and databases share the WAL.
+> The scope of the write-ahead-log (WAL) <sup>**1**</sup> is the `$UNIT` against which a `restore $UNIT to $TIME` command is executed. MS manages this per-database; postgres does this per-cluster and databases share the WAL.
 
 Both MS & Postgres contain multiple databases per instance/cluster in their own vocabulary. MS executes PITR against a single DB using its own dedicated WAL <sup>**2**</sup>. The "same command" in postgres applies to a cluster of multiple databases which share a common WAL. 
 
@@ -116,6 +116,7 @@ For example:
 ---
 
 <sup>**1**: Good (optional) reading: [ARIES whitepaper][9]</sup>
+
 <sup>**2**: Note that "log file", "transaction log", or "tran log" is the verbiage most often used when referring to the MS Write-Ahead-Log (WAL). For consistencies sake (and to follow the example of the ARIES whitepaper), I will try to use WAL cosistently here even when referring to an MSSQL transaction log file backup chain.</sup>
 
 [1]: https://kitchen.ci/

@@ -1,0 +1,9 @@
+#
+# This file is managed by chef
+# Changes will be overwritten
+#
+# https://github.com/postgres/postgres/blob/master/src/backend/utils/misc/postgresql.conf.sample
+
+<% node['pg']['conf']['file']['lines'].each do |line| -%>
+<%= line[:key] %>='<%= line[:value] %>'
+<% end %>

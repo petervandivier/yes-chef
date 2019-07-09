@@ -5,28 +5,37 @@
 # sudo echo "export PGDATA=#{base}" >> /etc/profile
 # source /etc/profile
 
-data     = '/data'
-base     = '/data/postgresql'
-log      = '/data/log'
-base_bkp = '/data/basebackup'
-wal_arch = '/data/wal_archive'
-bin      = '/usr/pgsql-10/bin'
+data      = '/data'
+base      = node['pg']['base']
+log       = node['pg']['log']
+base_bkp  = node['pg']['hadr']['base_bkp']
+wal_arch  = node['pg']['hadr']['wal_archive']
+bin       = node['pg']['bin'] 
+conf_dir  = node['pg']['conf']['path']
+conf_file = node['pg']['conf']['file']['path']
+hba_file  = node['pg']['conf']['hba']['path']
 
 get_pg = <<EOF
 yes | rpm -Uvh https://yum.postgresql.org/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm
 yum install -y postgresql10-server postgresql10
 EOF
 
+# https://www.postgresql.org/docs/current/runtime-config-file-locations.html
+# per docs, to keep conf files in separate directory from data_dir, you must
+# initdb -D '/conf/dir' and specify data_directory in postgresql.conf
 init_db = <<EOF
 sudo -u postgres #{bin}/initdb -D #{base}
-sudo -u postgres #{bin}/pg_ctl -D #{base} -l #{log}/logfile start
 EOF
 
-execute 'screw you, it works. YOU CAN`T JUDGE ME' do
+start_db = <<EOF
+sudo -u postgres #{bin}/pg_ctl -D #{base} -l #{log}/log -o "--config-file=#{conf_file}" start
+EOF
+
+execute 'Load RPM' do
     command get_pg
 end
 
-[data, base, log, base_bkp, wal_arch].each do |path|
+[data, base, log, base_bkp, wal_arch, conf_dir].each do |path|
     directory path do
         owner 'postgres'
         group 'postgres'
@@ -34,7 +43,40 @@ end
     end
 end
 
-execute 'YOU`RE NOT MY DAD' do
+template conf_file do
+    source 'postgresql.conf.erb'
+    owner 'postgres'
+    group 'postgres'
+    mode 0o605
+end
+
+template hba_file do
+    source 'pg_hba.conf.erb'
+    owner 'postgres'
+    group 'postgres'
+    mode 0o605
+end
+
+file "#{conf_dir}/pg_ident.conf" do
+    owner 'postgres'
+    group 'postgres'
+    mode 0o605
+    action :create
+end
+
+execute 'Init DB' do
     command init_db
     not_if {::File.exist?("#{base}/PG_VERSION")}
+end
+
+["#{base}/pg_hba.conf" "#{base}/pg_ident.conf" "#{base}/postgresql.conf"].each do |conf|
+    file conf do
+        action :delete
+        not_if {::File.exist?("#{base}/postmaster.pid")}
+    end
+end
+
+execute 'Start DB' do
+    command start_db
+    not_if {::File.exist?("#{base}/postmaster.pid")}
 end
