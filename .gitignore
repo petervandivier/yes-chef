@@ -9,3 +9,4 @@ bin/*
 .kitchen.local.yml
 
 BerksFile.lock
+.DS_Store
