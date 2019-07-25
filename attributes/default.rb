@@ -4,6 +4,7 @@ pg_base = '/data/base'
 
 default['pg']['base'] = "#{pg_base}"
 default['pg']['log']  = '/data/log'
+default['pg']['etc']  = '/data/etc'
 default['pg']['bin']  = '/usr/pgsql-10/bin'
 
 default['pg']['conf']['path']          = "#{pg_conf_path}"
