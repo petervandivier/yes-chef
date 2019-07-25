@@ -1,13 +1,20 @@
 
-default['pg']['conf']['path']          = '/data/conf/'
-default['pg']['conf']['file']['path']  = '/data/conf/postgresql.conf'
+pg_conf_path = '/data/conf'
+pg_base = '/data/base'
+
+default['pg']['base'] = "#{pg_base}"
+default['pg']['log']  = '/data/log'
+default['pg']['bin']  = '/usr/pgsql-10/bin'
+
+default['pg']['conf']['path']          = "#{pg_conf_path}"
+default['pg']['conf']['file']['path']  = "#{pg_conf_path}/postgresql.conf"
 default['pg']['conf']['file']['lines'] = [
 # FILE LOCATIONS
-    {key: 'data_directory', value: '/data/base/'},
-    {key: 'hba_file',       value: '/data/conf/pg_hba.conf'},
-    {key: 'ident_file',     value: '/data/conf/postgresql.conf'}
+    {key: 'data_directory', value: "#{pg_base}/"},
+    {key: 'hba_file',       value: "#{pg_conf_path}/pg_hba.conf"},
+    {key: 'ident_file',     value: "#{pg_conf_path}/postgresql.conf"}
 ]
-default['pg']['conf']['hba']['path']    = '/data/conf/pg_hba.conf'
+default['pg']['conf']['hba']['path']    = "#{pg_conf_path}/pg_hba.conf"
 default['pg']['conf']['hba']['records'] = [
     {type: 'local', db: 'all',         user: 'all',      method: 'trust'},
     {type: 'local', db: 'replication', user: 'all',      method: 'trust'},
@@ -17,8 +24,3 @@ default['pg']['conf']['hba']['records'] = [
     {type: 'host',  db: 'replication', user: 'all',      method: 'trust', address: '127.0.0.1/32'}, 
     {type: 'host',  db: 'replication', user: 'all',      method: 'trust', address: '::1/128'}
 ]
-
-default['pg']['base'] = '/data/base'
-default['pg']['log']  = '/data/log'
-default['pg']['bin']  = '/usr/pgsql-10/bin'
-
