@@ -1,13 +1,13 @@
 
-default['pg']['conf']['path']           = '/usr/local/etc/postgresql/'
-default['pg']['conf']['file']['path']   = '/usr/local/etc/postgresql/postgresql.conf'
+default['pg']['conf']['path']          = '/data/conf/'
+default['pg']['conf']['file']['path']  = '/data/conf/postgresql.conf'
 default['pg']['conf']['file']['lines'] = [
 # FILE LOCATIONS
-    {key: 'data_directory', value: '/data/postgresql/'},
-    {key: 'hba_file',       value: '/usr/local/etc/postgresql/pg_hba.conf'},
-    {key: 'ident_file',     value: '/usr/local/etc/postgres/postgresql.conf'}
+    {key: 'data_directory', value: '/data/base/'},
+    {key: 'hba_file',       value: '/data/conf/pg_hba.conf'},
+    {key: 'ident_file',     value: '/data/conf/postgresql.conf'}
 ]
-default['pg']['conf']['hba']['path']    = '/usr/local/etc/postgresql/pg_hba.conf'
+default['pg']['conf']['hba']['path']    = '/data/conf/pg_hba.conf'
 default['pg']['conf']['hba']['records'] = [
     {type: 'local', db: 'all',         user: 'all',      method: 'trust'},
     {type: 'local', db: 'replication', user: 'all',      method: 'trust'},
@@ -18,9 +18,9 @@ default['pg']['conf']['hba']['records'] = [
     {type: 'host',  db: 'replication', user: 'all',      method: 'trust', address: '::1/128'}
 ]
 
-default['pg']['base'] = '/data/postgresql'
+default['pg']['base'] = '/data/base'
 default['pg']['log']  = '/data/log'
 default['pg']['bin']  = '/usr/pgsql-10/bin'
 
-default['pg']['hadr']['base_bkp'] = '/data/basebackup'
-default['pg']['hadr']['wal_archive'] = '/data/wal_archive'
+default['pg']['hadr']['base_bkp'] = '/data/bkp'
+default['pg']['hadr']['wal_archive'] = '/data/walarch'
