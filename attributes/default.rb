@@ -22,5 +22,3 @@ default['pg']['base'] = '/data/base'
 default['pg']['log']  = '/data/log'
 default['pg']['bin']  = '/usr/pgsql-10/bin'
 
-default['pg']['hadr']['base_bkp'] = '/data/bkp'
-default['pg']['hadr']['wal_archive'] = '/data/walarch'

@@ -8,8 +8,6 @@
 data      = '/data'
 base      = node['pg']['base']
 log       = node['pg']['log']
-base_bkp  = node['pg']['hadr']['base_bkp']
-wal_arch  = node['pg']['hadr']['wal_archive']
 bin       = node['pg']['bin'] 
 conf_dir  = node['pg']['conf']['path']
 conf_file = node['pg']['conf']['file']['path']
@@ -35,7 +33,7 @@ execute 'Load RPM' do
     command get_pg
 end
 
-[data, base, log, base_bkp, wal_arch, conf_dir].each do |path|
+[data, base, log, conf_dir].each do |path|
     directory path do
         owner 'postgres'
         group 'postgres'
