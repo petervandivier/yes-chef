@@ -12,7 +12,13 @@ wal_arch  = node['pg']['hadr']['wal_archive']
     end
 end
 
-# node.default['pg']['conf']['hba']['records'] << {type: 'local', db: 'replication', user: 'postgres', method: 'peer', comment: 'required for basebackup'}
+node.default['pg']['conf']['hba']['records'] << {
+    type: 'local', 
+    db: 'replication', 
+    user: 'postgres', 
+    method: 'peer', 
+    comment: 'required for basebackup'
+}
 
 # node.default['pg']['conf']['file']['lines'] << [
 #     {key: 'archive_command', value: "test ! -f #{wal_arch}/%f && cp %p #{wal_arch}/%f" }
