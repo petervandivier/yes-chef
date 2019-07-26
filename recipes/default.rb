@@ -1,6 +1,4 @@
 
-# https://tecadmin.net/install-postgresql-server-centos/
-
 # sudo echo "export PATH=\$PATH:#{bin}" >> /etc/profile
 # sudo echo "export PGDATA=#{base}" >> /etc/profile
 # source /etc/profile
