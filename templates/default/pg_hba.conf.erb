@@ -1,0 +1,19 @@
+#
+# This file is managed by chef
+# Changes will be overwritten
+# 
+# https://www.postgresql.org/docs/current/auth-pg-hba-conf.html
+# https://github.com/postgres/postgres/blob/master/src/backend/libpq/pg_hba.conf.sample
+
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+<% node['pg']['conf']['hba']['records'].each do |rcrd| -%>
+<% if rcrd[:comment] -%>
+# <%= rcrd[:comment] %>
+<% end -%>
+<% if rcrd[:address] -%>
+<%= rcrd[:type].ljust(7) %> <%= rcrd[:db].ljust(15) %> <%= rcrd[:user].ljust(15) %> <%= rcrd[:address].ljust(23) %> <%= rcrd[:method] %>
+<% else -%>
+<%= rcrd[:type].ljust(7) %> <%= rcrd[:db].ljust(15) %> <%= rcrd[:user].ljust(15) %>                         <%= rcrd[:method] %>
+<% end -%>
+<% end -%>

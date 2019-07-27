@@ -9,4 +9,5 @@ suites:
   - name: jtv  # just_the_vm
   - name: mvpg # minimum viable postgres
     run_list: 
-      - recipe[yes_chef::pg10]
+      - recipe[yes_chef::default]
+      - recipe[yes_chef::backup]
