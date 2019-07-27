@@ -3,7 +3,6 @@
 # sudo echo "export PGDATA=#{base}" >> /etc/profile
 # source /etc/profile
 
-data      = '/data'
 base      = node['pg']['base']
 log       = node['pg']['log'] 
 etc       = node['pg']['etc'] 
@@ -32,11 +31,12 @@ execute 'Load RPM' do
     command get_pg
 end
 
-[data, base, log, conf_dir, etc].each do |path|
+[base, log, conf_dir, etc].each do |path|
     directory path do
         owner 'postgres'
         group 'postgres'
         mode 0o705
+        recursive true
     end
 end
 
@@ -59,6 +59,17 @@ file "#{conf_dir}/pg_ident.conf" do
     group 'postgres'
     mode 0o605
     action :create
+end
+
+[
+    "#{base}/postgresql.conf",
+    "#{base}/pg_hba.conf",
+    "#{base}/pg_ident.conf"
+].each do |default_conf|
+    file default_conf do
+        action :delete
+        backup false
+    end
 end
 
 execute 'Init DB' do
