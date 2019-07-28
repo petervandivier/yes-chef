@@ -11,3 +11,9 @@ suites:
     run_list: 
       - recipe[yes_chef::default]
       - recipe[yes_chef::backup]
+  - name: ms
+    driver:
+      customize:
+        memory: 3072
+    run_list: 
+      - recipe[yes_chef::mssql]
