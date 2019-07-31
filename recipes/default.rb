@@ -20,11 +20,11 @@ EOF
 # per docs, to keep conf files in separate directory from data_dir, you must
 # initdb -D '/conf/dir' and specify data_directory in postgresql.conf
 init_db = <<EOF
-sudo -u postgres #{bin}/initdb -D #{base}
+sudo -H -u postgres #{bin}/initdb -D #{base}
 EOF
 
 start_db = <<EOF
-sudo -u postgres #{bin}/pg_ctl -D #{base} -l #{log}/log -o "--config-file=#{conf_file}" start
+sudo -H -u postgres #{bin}/pg_ctl -D #{base} -l #{log}/log -o "--config-file=#{conf_file}" start
 EOF
 
 execute 'Load RPM' do
@@ -35,7 +35,7 @@ end
     directory path do
         owner 'postgres'
         group 'postgres'
-        mode 0o705
+        mode 0o700
         recursive true
     end
 end

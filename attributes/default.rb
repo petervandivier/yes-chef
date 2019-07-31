@@ -1,9 +1,10 @@
 
 pg_conf_path = '/data/conf'
 pg_base = '/data/base'
+pg_log = '/data/log'
 
 default['pg']['base'] = "#{pg_base}"
-default['pg']['log']  = '/data/log'
+default['pg']['log']  = "#{pg_log}"
 default['pg']['etc']  = '/data/etc'
 default['pg']['bin']  = '/usr/pgsql-10/bin'
 
