@@ -61,6 +61,11 @@ file "#{conf_dir}/pg_ident.conf" do
     action :create
 end
 
+execute 'Init DB' do
+    command init_db
+    not_if {::File.exist?("#{base}/PG_VERSION")}
+end
+
 [
     "#{base}/postgresql.conf",
     "#{base}/pg_hba.conf",
@@ -72,19 +77,13 @@ end
     end
 end
 
-execute 'Init DB' do
-    command init_db
-    not_if {::File.exist?("#{base}/PG_VERSION")}
-end
-
-["#{base}/pg_hba.conf" "#{base}/pg_ident.conf" "#{base}/postgresql.conf"].each do |conf|
-    file conf do
-        action :delete
-        not_if {::File.exist?("#{base}/postmaster.pid")}
-    end
-end
-
 execute 'Start DB' do
     command start_db
     not_if {::File.exist?("#{base}/postmaster.pid")}
+end
+
+require 'json'
+
+file '/tmp/dict.json' do
+    content "#{node['pg'].to_json}"
 end
