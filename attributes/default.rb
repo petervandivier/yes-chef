@@ -17,12 +17,13 @@ default['pg']['conf']['file']['lines'] = [
     {key: 'ident_file',     value: "#{pg_conf_path}/postgresql.conf"}
 ]
 default['pg']['conf']['hba']['path']    = "#{pg_conf_path}/pg_hba.conf"
-default['pg']['conf']['hba']['records'] = [
-    {type: 'local', db: 'all',         user: 'all',      method: 'trust'},
-    {type: 'local', db: 'replication', user: 'all',      method: 'trust'},
-    {type: 'local', db: 'replication', user: 'postgres', method: 'peer',                           comment: 'required for basebackup'},
-    {type: 'host',  db: 'all',         user: 'all',      method: 'trust', address: '127.0.0.1/32', comment: 'IPv4 local connections:'},
-    {type: 'host',  db: 'all',         user: 'all',      method: 'trust', address: '::1/128',      comment: 'IPv6 local connections:'},
-    {type: 'host',  db: 'replication', user: 'all',      method: 'trust', address: '127.0.0.1/32'}, 
-    {type: 'host',  db: 'replication', user: 'all',      method: 'trust', address: '::1/128'}
-]
+default['pg']['conf']['hba']['records'] = []
+
+require 'csv'
+hba_csv = File.read(File.dirname(File.expand_path(__FILE__)) + '/../resources/pg_hba.conf.csv')
+hba_cols = CSV.parse_line(hba_csv)
+hba_hash = CSV.parse(hba_csv).map {|a| Hash[hba_cols.zip(a)]}
+hba_hash.shift # trim header tuple
+hba_hash.each do |record|
+    default['pg']['conf']['hba']['records'] << record
+end
