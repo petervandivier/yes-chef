@@ -10,5 +10,5 @@ if [[ 0 -lt `find <%= node['pg']['hadr']['base_bkp'] %>* -type d -ctime +<%= nod
 then
     echo "deleting media older than <%= node['pg']['hadr']['retention_days'] %> days..."
     echo 
-    find <%= node['pg']['hadr']['base_bkp'] %>* -type d -ctime +<%= node['pg']['hadr']['retention_days'] %> | xargs rm -rv {} 
+    find <%= node['pg']['hadr']['base_bkp'] %>/* -maxdepth 0 -type d -ctime +<%= node['pg']['hadr']['retention_days'] %> | xargs rm -rv {} 
 fi

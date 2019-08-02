@@ -13,6 +13,7 @@ end
 
 node.default['pg']['conf']['file']['lines'] << {key: 'archive_command', value: "test ! -f #{wal_arch}/%f && cp %p #{wal_arch}/%f" }
 node.default['pg']['conf']['file']['lines'] << {key: 'archive_mode',    value: 'always'}
+node.default['pg']['conf']['file']['lines'] << {key: 'archive_timeout', value: '5min'}
 
 template "#{node['pg']['etc']}/basebackup.sh" do
     owner 'postgres'
@@ -29,3 +30,9 @@ cron 'pg_basebackup' do
     command "#{node['pg']['etc']}/basebackup.sh"
 end
 
+# TODO: execute only_if no base exists?
+execute 'init_basebackup' do
+    user 'postgres'
+    command "#{node['pg']['etc']}/basebackup.sh"
+    live_stream true
+end
