@@ -12,13 +12,16 @@ default['pg']['log']  = "#{pg_log}"
 default['pg']['etc']  = '/data/etc'
 default['pg']['bin']  = '/usr/pgsql-10/bin'
 
-default['pg']['conf']['path']          = "#{pg_conf_dir}"
+default['pg']['conf']['dir']           = "#{pg_conf_dir}"
 default['pg']['conf']['file']['path']  = "#{pg_conf_dir}/postgresql.conf"
 default['pg']['conf']['file']['lines'] = [
-# FILE LOCATIONS
     {key: 'data_directory', value: "#{pg_base}/"},
     {key: 'hba_file',       value: "#{pg_conf_dir}/pg_hba.conf"},
-    {key: 'ident_file',     value: "#{pg_conf_dir}/postgresql.conf"}
+    {key: 'ident_file',     value: "#{pg_conf_dir}/postgresql.conf"},
+# TODO: segregate static conf. vals to .csv resource
+# TODO: refactor conf dictionary to hash of type {:key, :value} 
+#         (instead of {key: foo, value: bar} )
+    {key: 'track_commit_timestamp', value: 'on'}    
 ]
 
 default['pg']['conf']['hba']['path']    = "#{pg_conf_dir}/pg_hba.conf"

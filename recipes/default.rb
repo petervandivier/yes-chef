@@ -7,7 +7,7 @@ base      = node['pg']['base']
 log       = node['pg']['log'] 
 etc       = node['pg']['etc'] 
 bin       = node['pg']['bin'] 
-conf_dir  = node['pg']['conf']['path']
+conf_dir  = node['pg']['conf']['dir']
 conf_file = node['pg']['conf']['file']['path']
 hba_file  = node['pg']['conf']['hba']['path']
 
