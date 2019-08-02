@@ -1,0 +1,5 @@
+type,db,user,method,address,comment
+local,replication,all,trust,,
+local,replication,postgres,peer,,"required for basebackup"
+host,replication,all,trust,"127.0.0.1/32",
+host,replication,all,trust,"::1/128",
