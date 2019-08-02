@@ -4,7 +4,7 @@
 # Changes will be overwritten
 #
 
-pg_basebackup -v -D <%= node['pg']['hadr']['base_bkp'] %>/$(<%= node['pg']['hadr']['name_fmt'] %>)
+<%= node['pg']['bin']%>/pg_basebackup -v -D <%= node['pg']['hadr']['base_bkp'] %>/$(<%= node['pg']['hadr']['name_fmt'] %>)
 
 if [[ 0 -lt `find <%= node['pg']['hadr']['base_bkp'] %>* -type d -ctime +<%= node['pg']['hadr']['retention_days'] %>` ]]
 then

@@ -1,5 +1,4 @@
 
-
 base_bkp  = node['pg']['hadr']['base_bkp']
 wal_arch  = node['pg']['hadr']['wal_archive']
 
@@ -11,14 +10,6 @@ wal_arch  = node['pg']['hadr']['wal_archive']
         recursive true
     end
 end
-
-node.default['pg']['conf']['hba']['records'] << {
-    type: 'local', 
-    db: 'replication', 
-    user: 'postgres', 
-    method: 'peer', 
-    comment: 'required for basebackup'
-}
 
 node.default['pg']['conf']['file']['lines'] << {key: 'archive_command', value: "test ! -f #{wal_arch}/%f && cp %p #{wal_arch}/%f" }
 node.default['pg']['conf']['file']['lines'] << {key: 'archive_mode',    value: 'always'}
