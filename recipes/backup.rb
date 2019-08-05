@@ -13,9 +13,16 @@ arch_cmd_sh  = "#{node['pg']['etc']}/archive_command.sh"
     end
 end
 
-node.default['pg']['conf']['file']['lines'] << {key: 'archive_command', value: "#{arch_cmd_sh}" }
+node.default['pg']['conf']['file']['lines'] << {key: 'archive_command', value: "#{arch_cmd_sh} %f %p"}
 node.default['pg']['conf']['file']['lines'] << {key: 'archive_mode',    value: 'always'}
 node.default['pg']['conf']['file']['lines'] << {key: 'archive_timeout', value: '5min'}
+
+template arch_cmd_sh do
+    owner 'postgres'
+    group 'postgres'
+    mode 0o700
+    source 'backup/archive_command.sh.erb'
+end
 
 template arch_cmd_sh do
     owner 'postgres'

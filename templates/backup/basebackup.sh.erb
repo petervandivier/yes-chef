@@ -1,10 +1,9 @@
-#!/usr/bin/bash
-# 
-# This file is managed by chef
-# Changes will be overwritten
-#
+#!/usr/bin/env bash
+<%= node['general']['template_header'] %>
 
-<%= node['pg']['bin']%>/pg_basebackup -v -D <%= node['pg']['hadr']['base_bkp'] %>/$(<%= node['pg']['hadr']['name_fmt'] %>)
+ts=`<%= node['pg']['hadr']['name_fmt'] %>`
+
+<%= node['pg']['bin']%>/pg_basebackup -v -D <%= node['pg']['hadr']['base_bkp'] %>/$ts
 
 if [[ 0 -lt `find <%= node['pg']['hadr']['base_bkp'] %>/* -maxdepth 0 -type d -ctime +<%= node['pg']['hadr']['retention_days'] %>` ]]
 then
