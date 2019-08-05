@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# 
+# This file is managed by chef
+# Changes will be overwritten
+#
+f=$1
+p=$2
+wal_arch="<%= node['pg']['hadr']['wal_archive'] %>"
+
+test ! -f $wal_arch/$f && cp $p $wal_arch/$f
