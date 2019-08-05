@@ -1,4 +1,9 @@
 
+default['general']['template_header'] = "# 
+# This file is managed by chef
+# Changes will be overwritten
+#"
+
 require 'csv'
 
 pg_conf_dir = '/data/conf'

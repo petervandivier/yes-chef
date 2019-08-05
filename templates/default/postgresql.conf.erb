@@ -1,7 +1,4 @@
-#
-# This file is managed by chef
-# Changes will be overwritten
-#
+<%= node['general']['template_header'] %>
 # https://github.com/postgres/postgres/blob/master/src/backend/utils/misc/postgresql.conf.sample
 
 <% node['pg']['conf']['file']['lines'].each do |line| -%>
