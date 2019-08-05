@@ -1,7 +1,8 @@
 
 base_bkp  = node['pg']['hadr']['base_bkp']
 wal_arch  = node['pg']['hadr']['wal_archive']
-arch_cmd_sh = "#{node['pg']['etc']}/archive_command.sh"
+basebkp_sh = "#{node['pg']['etc']}/basebackup.sh"
+arch_cmd_sh  = "#{node['pg']['etc']}/archive_command.sh"
 
 [base_bkp, wal_arch].each do |path|
     directory path do
@@ -23,7 +24,14 @@ template arch_cmd_sh do
     source 'backup/archive_command.sh.erb'
 end
 
-template "#{node['pg']['etc']}/basebackup.sh" do
+template arch_cmd_sh do
+    owner 'postgres'
+    group 'postgres'
+    mode 0o700
+    source 'backup/archive_command.sh.erb'
+end
+
+template basebkp_sh do
     owner 'postgres'
     group 'postgres'
     mode 0o701
@@ -35,6 +43,12 @@ cron 'pg_basebackup' do
     hour 0
     day '*'
     user 'postgres'
-    command "#{node['pg']['etc']}/basebackup.sh"
+    command basebkp_sh
 end
 
+# TODO: execute only_if no base exists?
+execute 'init_basebackup' do
+    user 'postgres'
+    command basebkp_sh
+    live_stream true
+end
