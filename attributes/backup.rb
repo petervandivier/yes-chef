@@ -7,6 +7,7 @@ hba_csv = File.read(resource_dir + 'pg_hba.conf.csv')
 
 default['pg']['hadr']['base_bkp'] = '/data/bkp/base'
 default['pg']['hadr']['wal_archive'] = "#{wal_arch}"
+default['pg']['hadr']['tar_dir'] = '/data/tar'
 
 default['pg']['hadr']['name_fmt'] = 'date -u +%Y%m%d%H%M%S%z'
 default['pg']['hadr']['retention_days'] = 7

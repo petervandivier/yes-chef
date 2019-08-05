@@ -4,11 +4,13 @@
 # Changes will be overwritten
 #
 
-<%= node['pg']['bin']%>/pg_basebackup -v -D <%= node['pg']['hadr']['base_bkp'] %>/$(<%= node['pg']['hadr']['name_fmt'] %>)
+ts=`<%= node['pg']['hadr']['name_fmt'] %>`
 
-if [[ 0 -lt `find <%= node['pg']['hadr']['base_bkp'] %>* -type d -ctime +<%= node['pg']['hadr']['retention_days'] %>` ]]
+<%= node['pg']['bin']%>/pg_basebackup -v -D <%= node['pg']['hadr']['base_bkp'] %>/$ts
+
+if [[ 0 -lt `find <%= node['pg']['hadr']['base_bkp'] %>/* -maxdepth 0 -type d -ctime +<%= node['pg']['hadr']['retention_days'] %>` ]]
 then
     echo "deleting media older than <%= node['pg']['hadr']['retention_days'] %> days..."
     echo 
-    find <%= node['pg']['hadr']['base_bkp'] %>* -type d -ctime +<%= node['pg']['hadr']['retention_days'] %> | xargs rm -rv {} 
+    find <%= node['pg']['hadr']['base_bkp'] %>/* -maxdepth 0 -type d -ctime +<%= node['pg']['hadr']['retention_days'] %> | xargs rm -rv {} 
 fi
