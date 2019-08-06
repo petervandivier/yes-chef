@@ -31,12 +31,17 @@ execute 'Load RPM' do
     command get_pg
 end
 
-[base, log, conf_dir, etc].each do |path|
+directory "/data" do
+    owner 'postgres'
+    group 'postgres'
+    mode 0o700
+end
+
+[log, conf_dir, etc].each do |path|
     directory path do
         owner 'postgres'
         group 'postgres'
         mode 0o700
-        recursive true
     end
 end
 
