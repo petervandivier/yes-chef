@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+<%= node['general']['template_header'] %>
+
+<%= node['pg']['bin'] %>/psql -U postgres -c 'select pg_switch_wal();'
