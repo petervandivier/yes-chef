@@ -34,14 +34,14 @@ end
 directory "/data" do
     owner 'postgres'
     group 'postgres'
-    mode 0o700
+    mode 0o710
 end
 
 [log, conf_dir, etc].each do |path|
     directory path do
         owner 'postgres'
         group 'postgres'
-        mode 0o700
+        mode 0o710
     end
 end
 
@@ -85,10 +85,4 @@ end
 execute 'Start DB' do
     command start_db
     not_if {::File.exist?("#{base}/postmaster.pid")}
-end
-
-require 'json'
-
-file '/tmp/dict.json' do
-    content "#{node['pg'].to_json}"
 end

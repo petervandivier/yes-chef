@@ -12,14 +12,14 @@ arch_cmd_sh  = "#{pg_etc}/archive_command.sh"
 directory "/data/bkp" do
     owner 'postgres'
     group 'postgres'
-    mode 0o700
+    mode 0o710
 end
 
 [base_bkp, wal_arch, tar_dir].each do |path|
     directory path do
         owner 'postgres'
         group 'postgres'
-        mode 0o700
+        mode 0o710
     end
 end
 
