@@ -4,12 +4,12 @@ require 'csv'
 pg_root = node['pg']['root']
 
 bkp_root = "#{pg_root}/bkp"
-wal_arch = "#{bkp_root}/wal"
+# wal_arch = "#{bkp_root}/wal"
 resource_dir = File.dirname(File.expand_path(__FILE__))+ '/../resources/backup/'
 hba_csv = File.read(resource_dir + 'pg_hba.conf.csv')
 
 default['pg']['hadr']['base_bkp']    = "#{bkp_root}/base"
-default['pg']['hadr']['wal_archive'] = "#{wal_arch}"
+default['pg']['hadr']['wal_archive'] = "#{bkp_root}/wal"
 default['pg']['hadr']['tar_dir']     = "#{pg_root}/tar"
 
 default['pg']['hadr']['name_fmt'] = 'date -u +%Y%m%d%H%M%S%z'

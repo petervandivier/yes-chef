@@ -15,4 +15,3 @@ suites:
   - name: trg
     run_list: 
       - recipe[yes_chef::default]
-      - recipe[yes_chef::backup]

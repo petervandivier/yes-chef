@@ -1,4 +1,5 @@
 
+pg_root   = node['pg']['root']
 base_bkp  = node['pg']['hadr']['base_bkp']
 wal_arch  = node['pg']['hadr']['wal_archive']
 tar_dir   = node['pg']['hadr']['tar_dir'] 
@@ -57,9 +58,9 @@ cron 'pg_basebackup' do
 end
 
 execute 'init_basebackup' do
-    cwd "/data"
+    cwd pg_root
     user 'postgres'
     command basebkp_sh
     live_stream true
-    not_if { ::File.exist?("#{node['pg']['base']}/PG_VERSION") }
+    not_if {::File.exist?("#{pg_root}/active.tar")}
 end
