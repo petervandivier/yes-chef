@@ -1,8 +1,8 @@
 
-require 'json'
-
 pg_root = node['pg']['root']
 pg_etc  = node['pg']['etc']
+
+require 'json'
 
 file '/tmp/dict.json' do
     content "#{node['pg'].to_json}"
@@ -38,11 +38,13 @@ EOF
 
 execute 'make heartbeat target' do
     command make_heartbeat_target
+    only_if {::File.exist?("#{pg_root}/active.tar")}
 end
 
 cron 'heartbeat' do
     minute '*'
     command 'psql -U postgres -c "update heartbeat set ts = now() where not(pg_is_in_recovery());"'
+    only_if {::File.exist?("#{pg_root}/active.tar")}
 end
 
 link "#{pg_root}/sw" do
