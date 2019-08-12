@@ -1,6 +1,9 @@
 
 require 'json'
 
+pg_root = node['pg']['root']
+pg_etc  = node['pg']['etc']
+
 file '/tmp/dict.json' do
     content "#{node['pg'].to_json}"
 end
@@ -40,4 +43,12 @@ end
 cron 'heartbeat' do
     minute '*'
     command 'psql -U postgres -c "update heartbeat set ts = now() where not(pg_is_in_recovery());"'
+end
+
+link "#{pg_root}/sw" do
+    to "#{pg_etc}/switch_wal.sh"
+end
+
+link "#{pg_root}/bbk" do
+    to "#{pg_etc}/basebackup.sh"
 end
