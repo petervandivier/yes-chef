@@ -45,3 +45,7 @@ execute "get utils" do
     command get_utils
 end
 
+# TODO: pwsh config on Centos
+# https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-linux?view=powershell-6#centos-7
+# curl https://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/yum.repos.d/microsoft.repo
+# sudo yum install -y powershell
