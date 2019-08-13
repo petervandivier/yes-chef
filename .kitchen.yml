@@ -4,6 +4,7 @@ driver:
 
 platforms:
   - name: centos-7.6
+  - name: tas50/windows_2019
 
 suites:
   - name: jtv  # just_the_vm
@@ -11,9 +12,13 @@ suites:
     run_list: 
       - recipe[yes_chef::default]
       - recipe[yes_chef::backup]
+    excludes:
+      - tas50/windows_2019
   - name: ms
     driver:
       customize:
         memory: 3072
     run_list: 
       - recipe[yes_chef::mssql]
+    excludes:
+      - tas50/windows_2019
