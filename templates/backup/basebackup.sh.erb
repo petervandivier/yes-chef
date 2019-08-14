@@ -7,6 +7,6 @@ ts=`<%= node['pg']['hadr']['name_fmt'] %>`
 
 <%= node['pg']['bin']%>/pg_basebackup -v -F tar -D <%= node['pg']['hadr']['tar_dir'] %>/$ts
 
-ln -sfn <%= node['pg']['hadr']['tar_dir'] %>/$ts active.tar
+ln -sfn <%= node['pg']['hadr']['tar_dir'] %>/$ts/pg_wal.tar active.tar
 
 popd > /dev/null
