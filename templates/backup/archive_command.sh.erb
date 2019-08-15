@@ -8,7 +8,4 @@ wal_tar="<%= node['pg']['root'] %>/active.tar"
 
 test ! -f $wal_arch/$f && \
   cp $p $wal_arch/$f && \
-  if [ test -a $wal_tar ]
-then
-    tar -C $wal_arch -rf $wal_tar $f
-fi
+  tar -C $wal_arch -rf $wal_tar $f
