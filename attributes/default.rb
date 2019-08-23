@@ -25,7 +25,7 @@ default['pg']['conf']['file']['path']  = "#{pg_conf_dir}/postgresql.conf"
 default['pg']['conf']['file']['lines'] = [
     {key: 'data_directory', value: "#{pg_base}/"},
     {key: 'hba_file',       value: "#{pg_conf_dir}/pg_hba.conf"},
-    {key: 'ident_file',     value: "#{pg_conf_dir}/postgresql.conf"},
+    {key: 'ident_file',     value: "#{pg_conf_dir}/pg_ident.conf"},
 # TODO: segregate static conf. vals to .csv resource
 # TODO: refactor conf dictionary to hash of type {:key, :value} 
 #         (instead of {key: foo, value: bar} )
