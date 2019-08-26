@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 <%= node['general']['template_header'] %>
 
+pushd <%= node['pg']['root'] %> > /dev/null
+
 ts=`<%= node['pg']['hadr']['name_fmt'] %>`
 
-<%= node['pg']['bin']%>/pg_basebackup -v -D <%= node['pg']['hadr']['base_bkp'] %>/$ts
+<%= node['pg']['bin']%>/pg_basebackup -v -F tar -D <%= node['pg']['hadr']['tar_dir'] %>/$ts
 
-if [[ 0 -lt `find <%= node['pg']['hadr']['base_bkp'] %>/* -maxdepth 0 -type d -ctime +<%= node['pg']['hadr']['retention_days'] %>` ]]
-then
-    echo "deleting media older than <%= node['pg']['hadr']['retention_days'] %> days..."
-    echo 
-    find <%= node['pg']['hadr']['base_bkp'] %>/* -maxdepth 0 -type d -ctime +<%= node['pg']['hadr']['retention_days'] %> | xargs rm -rv {} 
-fi
+ln -sfn <%= node['pg']['hadr']['tar_dir'] %>/$ts/pg_wal.tar active.tar
+
+popd > /dev/null

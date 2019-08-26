@@ -4,5 +4,8 @@
 f=$1
 p=$2
 wal_arch="<%= node['pg']['hadr']['wal_archive'] %>"
+wal_tar="<%= node['pg']['root'] %>/active.tar"
 
-test ! -f $wal_arch/$f && cp $p $wal_arch/$f
+test ! -f $wal_arch/$f && \
+  cp $p $wal_arch/$f && \
+  tar -C $wal_arch -rf $wal_tar $f

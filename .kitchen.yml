@@ -11,3 +11,8 @@ suites:
     run_list: 
       - recipe[yes_chef::default]
       - recipe[yes_chef::backup]
+      - recipe[yes_chef::debug]
+  - name: trg
+    run_list: 
+      - recipe[yes_chef::default]
+      - recipe[yes_chef::debug]

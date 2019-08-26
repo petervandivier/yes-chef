@@ -6,15 +6,18 @@ default['general']['template_header'] = "#
 
 require 'csv'
 
-pg_conf_dir = '/data/conf'
-pg_base = '/data/base'
-pg_log = '/data/log'
+pg_root = '/data'
+default['pg']['root'] = pg_root
+
+pg_conf_dir  = "#{pg_root}/conf"
+pg_base      = "#{pg_root}/base"
+pg_log       = "#{pg_root}/log"
 resource_dir = File.dirname(File.expand_path(__FILE__))+ '/../resources/'
-hba_csv = File.read(resource_dir + 'pg_hba.conf.csv')
+hba_csv      = File.read(resource_dir + 'pg_hba.conf.csv')
 
 default['pg']['base'] = "#{pg_base}"
 default['pg']['log']  = "#{pg_log}"
-default['pg']['etc']  = '/data/etc'
+default['pg']['etc']  = "#{pg_root}/etc"
 default['pg']['bin']  = '/usr/pgsql-10/bin'
 
 default['pg']['conf']['dir']           = "#{pg_conf_dir}"
@@ -22,7 +25,7 @@ default['pg']['conf']['file']['path']  = "#{pg_conf_dir}/postgresql.conf"
 default['pg']['conf']['file']['lines'] = [
     {key: 'data_directory', value: "#{pg_base}/"},
     {key: 'hba_file',       value: "#{pg_conf_dir}/pg_hba.conf"},
-    {key: 'ident_file',     value: "#{pg_conf_dir}/postgresql.conf"},
+    {key: 'ident_file',     value: "#{pg_conf_dir}/pg_ident.conf"},
 # TODO: segregate static conf. vals to .csv resource
 # TODO: refactor conf dictionary to hash of type {:key, :value} 
 #         (instead of {key: foo, value: bar} )
