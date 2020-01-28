@@ -65,7 +65,7 @@ def expand_pitr_tarballs():
 def stop_postgres_if_running():
     status = os.popen(f"{bin_dir}/pg_ctl status -D {data_base}").read()
     if "server is running" in status:
-        os.popen(f"{bin_dir}/pg_ctl stop -D {data_base}")
+        os.popen(f"{bin_dir}/pg_ctl stop -D {data_base}").read()
 
 def initialize_restore_directories(do_nuke):
     if os.path.exists(wal_restore_dir):
@@ -111,6 +111,7 @@ if __name__ == '__main__':
     # https://stackoverflow.com/a/36745806/4709762
     with open(recovery_conf_file, "w+") as fh:
         fh.write(recovery_conf_content)
+
     os.chmod(recovery_conf_file, 0o777)
 
     os.popen(f"{bin_dir}/pg_ctl start -D {data_base} -o \"--config-file={conf_dir}/postgresql.conf\"")
