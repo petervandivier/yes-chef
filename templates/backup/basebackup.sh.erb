@@ -3,7 +3,7 @@
 
 pushd <%= node['pg']['root'] %> > /dev/null
 
-ts=`<%= node['pg']['hadr']['name_fmt'] %>`
+ts=`<%= node['pg']['hadr']['name_fmt_sh_cmd'] %>`
 
 <%= node['pg']['bin']%>/pg_basebackup -v -F tar -D <%= node['pg']['hadr']['tar_dir'] %>/$ts
 

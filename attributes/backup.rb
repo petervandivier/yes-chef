@@ -11,8 +11,10 @@ hba_csv = File.read(resource_dir + 'pg_hba.conf.csv')
 default['pg']['hadr']['base_bkp']    = "#{bkp_root}/base"
 default['pg']['hadr']['wal_archive'] = "#{bkp_root}/wal"
 default['pg']['hadr']['tar_dir']     = "#{pg_root}/tar"
+default['pg']['hadr']['untar_dir']   = "/tmp/pg_wal"
 
-default['pg']['hadr']['name_fmt'] = 'date -u +%Y%m%d%H%M%S%z'
+default['pg']['hadr']['name_fmt_py'] = "%Y%m%d%H%M%S"
+default['pg']['hadr']['name_fmt_sh_cmd'] = 'date -u +%Y%m%d%H%M%S%z'
 default['pg']['hadr']['retention_days'] = 7
 
 hba_cols = CSV.parse_line(hba_csv)

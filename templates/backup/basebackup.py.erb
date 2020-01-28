@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+
+# <%= node['general']['template_header'] %>
+
+import argparse
+from datetime import datetime
+import sys
+import multiprocessing
+import os
+import subprocess
+import pwd
+
+now = datetime.now()
+default_bkp_name = now.strftime("<%= node['pg']['hadr']['name_fmt_py'] %>")
+default_bin_path = "<%= node['pg']['bin'] %>"
+default_bkp_dir = "<%= node['pg']['hadr']['base_bkp'] %>"
+default_wal_arch = "<%= node['pg']['hadr']['wal_archive']%>"
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--bkp_name', default=default_bkp_name)
+parser.add_argument('--bin_path', default=default_bin_path)
+parser.add_argument('--bkp_dir',  default=default_bkp_dir)
+parser.add_argument('--wal_arch', default=default_wal_arch)
+
+if __name__ == '__main__':
+    args = parser.parse_args()
+
+    if 'postgres' != pwd.getpwuid( os.getuid() )[ 0 ]:
+        raise ValueError('basebackup must be run as user postgres')
+
+    p = subprocess.Popen([f"{args.bin_path}/psql", "-U", "postgres", "-t", "-c", "select (not(pg_is_in_recovery()))::text;"], stdout=subprocess.PIPE)
+
+    is_primary = str(p.stdout.readline())
+
+    if("true" in is_primary):
+        current_basebackup = os.path.join(args.bkp_dir,args.bkp_name)
+
+        subprocess.call([f"{args.bin_path}/pg_basebackup", "-v", "-F", "tar", "-D", current_basebackup])
+
+        active_tar_symlink = f"{args.wal_arch}/active.tar"
+        latest_basebackup_symlink = f"{args.bkp_dir}/latest"
+
+        if os.path.exists(active_tar_symlink):
+            os.remove(active_tar_symlink)
+        if os.path.exists(latest_basebackup_symlink):
+            os.remove(latest_basebackup_symlink)
+
+        os.symlink(f"{current_basebackup}/pg_wal.tar", active_tar_symlink)
+        os.symlink(   current_basebackup, latest_basebackup_symlink)
+    else:
+        print("do nothing")

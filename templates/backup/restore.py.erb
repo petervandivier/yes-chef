@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+
+# <%= node['general']['template_header'] %>
+
+import argparse
+from datetime import datetime
+import os
+import pwd
+import re
+import shutil
+from subprocess import Popen
+import sys
+import tarfile
+
+# currently requiring that this be run against localhost as user "postgres"
+pg_root = 'postgres'
+
+if pwd.getpwuid(os.getuid()).pw_name != pg_root:
+    raise SystemExit(f"Restore must be run as user '{pg_root}'")
+    # sys.exit(f"Restore must be run as user '{pg_root}'")
+
+name_fmt = "<%= node['pg']['hadr']['name_fmt_py'] %>"
+default_bkp_base = "<%= node['pg']['hadr']['base_bkp'] %>"
+default_data_base = "<%= node['pg']['base'] %>"
+default_wal_restore_dir = "<%= node['pg']['hadr']['untar_dir'] %>"
+default_bin_dir = "<%= node['pg']['bin'] %>"
+default_conf_dir = "<%= node['pg']['conf']['dir'] %>"
+
+utcnow_iso_str = datetime.utcnow().strftime(f"{name_fmt}+00")
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--stopat', help='ISO Date, Time & TZ at which to end the WAL replay. This is the Point In Time for your PIT Restore.')
+parser.add_argument('--do_nuke', action='store_true')
+parser.add_argument('--_bkp_base', default=default_bkp_base)
+parser.add_argument('--_data_base', default=default_data_base)
+parser.add_argument('--_wal_restore_dir', default=default_wal_restore_dir)
+parser.add_argument('--_bin_dir', default=default_bin_dir)
+parser.add_argument('--_conf_dir', default=default_conf_dir)
+
+def get_recovery_conf_content(stopat):
+    if stopat == None:
+        rpo_line = "recovery_target_timeline='latest'"
+    else:
+        rpo_line = f"recovery_target_time='{stopat}'"
+    restore_command = f"cp {wal_restore_dir}/%f %p"
+    recovery_conf_content = (
+        f"# http://www.pgpool.net/docs/pgpool-II-3.5.4/doc/recovery.conf.sample \n" +
+        f" \n" +
+        f"{rpo_line} \n" +
+        f"restore_command='{restore_command}' \n" 
+    )
+    return recovery_conf_content
+
+def expand_pitr_tarballs():
+    # https://docs.python.org/2/library/tarfile.html
+    # https://linux.die.net/man/1/tar
+    # https://stackoverflow.com/a/31163747/4709762
+    base_tar = tarfile.open(os.path.join(bkp_base,"latest","base.tar"))
+    base_tar.extractall(path = data_base)
+    base_tar.close()
+    wal_tar = tarfile.open(os.path.join(bkp_base,"latest","pg_wal.tar"))
+    wal_tar.extractall(path = wal_restore_dir)
+    wal_tar.close()
+
+def stop_postgres_if_running():
+    status = os.popen(f"{bin_dir}/pg_ctl status -D {data_base}").read()
+    if "server is running" in status:
+        os.popen(f"{bin_dir}/pg_ctl stop -D {data_base}")
+
+def initialize_restore_directories(do_nuke):
+    if os.path.exists(wal_restore_dir):
+        shutil.rmtree(wal_restore_dir)
+    os.makedirs(wal_restore_dir)
+    # remove_or_archive_data_dir
+    if do_nuke == True:
+        shutil.rmtree(data_base)
+    else: 
+        archive_dir = os.path.join("/tmp","PGDATA",utcnow_iso_str)
+        os.makedirs(archive_dir, exist_ok=True)
+        # if the parent directory is not owned by postgres, .move() borks
+        # swallow the error and continue
+        try:
+            shutil.move(data_base,archive_dir)
+        except OSError:
+            pass
+    os.makedirs(data_base, mode=0o700, exist_ok=True)
+
+if __name__ == '__main__':
+    args = parser.parse_args()
+
+    bkp_base = args._bkp_base
+    data_base = args._data_base
+    wal_restore_dir = args._wal_restore_dir
+    bin_dir = args._bin_dir
+    conf_dir = args._conf_dir
+    recovery_conf_file = os.path.join(data_base,"recovery.conf")
+
+    stop_postgres_if_running()
+
+    initialize_restore_directories(args.do_nuke)
+
+    expand_pitr_tarballs()
+
+    recovery_conf_content = get_recovery_conf_content(args.stopat)
+
+    max_connections = os.popen(f"{bin_dir}/pg_controldata {data_base} | grep max_connections | awk '{{ printf $3 }}'").read()
+
+    with open(os.path.join(conf_dir,'postgresql.conf'),'a') as pgconf:
+        pgconf.write(f"\nmax_connections={max_connections}\n")
+
+    # https://stackoverflow.com/a/36745806/4709762
+    with open(recovery_conf_file, "w+") as fh:
+        fh.write(recovery_conf_content)
+    os.chmod(recovery_conf_file, 0o777)
+
+    os.popen(f"{bin_dir}/pg_ctl start -D {data_base} -o \"--config-file={conf_dir}/postgresql.conf\"")
