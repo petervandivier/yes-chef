@@ -12,7 +12,7 @@ conf_file = node['pg']['conf']['file']['path']
 hba_file  = node['pg']['conf']['hba']['path']
 
 get_pg = <<EOF
-yes | rpm -Uvh https://yum.postgresql.org/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm
+yes | rpm -Uvh https://yum.postgresql.org/10/redhat/rhel-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 yum install -y postgresql10-server postgresql10
 EOF
 
