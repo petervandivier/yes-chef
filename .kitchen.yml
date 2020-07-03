@@ -2,6 +2,9 @@
 driver:
   name: vagrant
 
+verifier:
+  name: inspec
+
 platforms:
   - name: centos-7.6
     run_list: 
@@ -21,3 +24,4 @@ suites:
   - name: elk
     run_list:
       - recipe[yes_chef::elasticsearch]
+
