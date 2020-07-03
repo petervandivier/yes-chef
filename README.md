@@ -8,7 +8,7 @@ I'm new to the [kitchen][1] and I've been having some trouble keeping track of m
 
 > Just-the-VM.
 
-The minimum configuration needed to make a VM can be found at commit `f9bd9f0067889a1d124121d459665796db3c059b`. It is deceptively small, requiring just 3 nodes in `.kitchen.yml`. Having a "blank" VM is ~~sometimes~~ often super useful for trying new things before checking them in. 
+The minimum configuration needed to make a VM can be found at commit `f9bd9f0067889a1d124121d459665796db3c059b`. It is deceptively small, requiring just 3 nodes in `.kitchen.yml`. Having a "blank" VM is ~~sometimes~~ _very often_ **super useful** for trying new things before checking them in. 
 
 The stack I'm running at the moment includes the following: 
 
@@ -30,13 +30,21 @@ See commit `5b7d50fd4521ebcf75487fea06d50b7be9d061e8` for the last remnants of t
 
 I'm moving a bit faster now, but I'm trying to keep up with this README as a Useful Document for Future @petervandivier. 
 
-## Connecting to PostgreSQL on your VM
+## Elasticsearch
 
-We now have a viable, fully featured database instance. We can ssh onto the vm trivially with the `kitchen login [INSTANCE|REGEXP]` command. You can find the necessary details to ssh/scp "manually" at `./.kitchen/$vm_name.yml` (mvpg-centos-72.yml in our case). 
+By commit `91893ab2a16e6215aa7b9c2ec0f28c37ee2a33bd`, we have an Elasticsearch VM with some barebones testing. 
+
+# Tests
+
+I've added [InSpec for kitchen][12] tests. InSpec as a testing provider is [also available for chef][13] for assertions for server-side / suite deployment. 
+
+# Connecting to PostgreSQL on your VM
+
+With the "mvpg" suite, we have a viable, fully featured database instance. We can ssh onto the vm trivially with the `kitchen login [INSTANCE|REGEXP]` command. You can find the necessary details to ssh/scp "manually" at `./.kitchen/$vm_name.yml` (mvpg-centos-72.yml in our case). 
 
 How though, would you connect with an IDE? Surely you don't want to [_only ever ssh_](https://www.youtube.com/watch?v=zGxwbhkDjZM).
 
-### SSH Tunnelling
+## SSH Tunnelling
 
 Assuming you are running [PG Admin][6], you can now connect "as normal" with the addition of the information found in `./.kitchen/$vm_name.yml`, for example:
 
@@ -62,11 +70,11 @@ host    all             all             ::1/128                 trust
 
 [`trust`][8] is the most permissive access level and will confer access with a blank password for all users with the above configuration.  
 
-### Port Forwarding
+## Port Forwarding
 
 TODO: Port forwarding & pg_hba.conf
 
-## PITR
+# Postgres PITR
 
 > Point-In-Time-Recovery
 
@@ -96,3 +104,5 @@ Both MS & Postgres contain multiple databases per instance (cluster in their PG 
 [9]: https://en.wikipedia.org/wiki/Rubber_duck_debugging
 [10]: https://people.eecs.berkeley.edu/~brewer/cs262/Aries.pdf
 [11]: https://tecadmin.net/install-postgresql-server-centos/
+[12]: https://github.com/inspec/kitchen-inspec
+[13]: https://github.com/inspec/inspec
