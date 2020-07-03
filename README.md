@@ -30,7 +30,7 @@ See commit `5b7d50fd4521ebcf75487fea06d50b7be9d061e8` for the last remnants of t
 
 I'm moving a bit faster now, but I'm trying to keep up with this README as a Useful Document for Future @petervandivier. 
 
-## Elasticsearch
+## ELK
 
 By commit `91893ab2a16e6215aa7b9c2ec0f28c37ee2a33bd`, we have an Elasticsearch VM with some barebones testing. 
 
