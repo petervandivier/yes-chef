@@ -2,7 +2,7 @@
 
 # https://computingforgeeks.com/how-to-install-elasticsearch-on-centos/
 
-yum -y update
+# yum -y update
 
 yes | yum -y install java-1.8.0-openjdk  java-1.8.0-openjdk-devel
 
@@ -36,8 +36,6 @@ yum -y install elasticsearch-oss
 
 systemctl enable --now elasticsearch
 
-# systemctl status elasticsearch
-# curl http://127.0.0.1:9200 
 # curl -X PUT "http://127.0.0.1:9200/test_index"
 
 yes | yum install kibana-oss logstash
