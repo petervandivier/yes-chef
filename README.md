@@ -32,6 +32,8 @@ I'm moving a bit faster now, but I'm trying to keep up with this README as a Use
 
 ## ELK
 
+> ElasticSearch & Kibana
+
 By commit `91893ab2a16e6215aa7b9c2ec0f28c37ee2a33bd`, we have an Elasticsearch VM with some barebones testing. 
 
 # Tests
