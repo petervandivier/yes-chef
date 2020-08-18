@@ -6,9 +6,14 @@ verifier:
   name: inspec
 
 platforms:
-  - name: centos-7.6
+  - name: centos
+    driver:
+      box: bento/centos-7.6
     run_list: 
       - recipe[yes_chef::default]
+  - name: freebsd
+    driver:
+      box: generic/freebsd11
 
 suites:
   - name: jtv  # just_the_vm
