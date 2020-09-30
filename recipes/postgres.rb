@@ -13,7 +13,7 @@ hba_file  = node['pg']['conf']['hba']['path']
 
 get_pg = <<EOF
 yes | rpm -Uvh https://yum.postgresql.org/10/redhat/rhel-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-yum install -y postgresql10-server postgresql10
+yum install -y postgresql10-server postgresql10 postgresql10-contrib
 EOF
 
 # https://www.postgresql.org/docs/current/runtime-config-file-locations.html
