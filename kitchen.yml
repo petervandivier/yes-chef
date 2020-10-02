@@ -9,8 +9,6 @@ platforms:
   - name: centos
     driver:
       box: bento/centos-7.6
-      customize:
-        memory: 512
     run_list: 
       - recipe[yes_chef::default]
   - name: freebsd
