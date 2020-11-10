@@ -6,14 +6,14 @@ verifier:
   name: inspec
 
 platforms:
-  - name: centos
+  - name: centos7
     driver:
-      box: bento/centos-7.6
+      box: bento/centos-7.7
     run_list: 
       - recipe[yes_chef::default]
-  - name: freebsd
+  - name: freebsd12
     driver:
-      box: generic/freebsd11
+      box: bento/freebsd-12.2
 
 suites:
   - name: jtv  # just_the_vm
@@ -28,11 +28,17 @@ suites:
       - recipe[yes_chef::postgres]
       - recipe[yes_chef::backup]
       - recipe[yes_chef::debug]
+    excludes:
+      - freebsd12
   - name: trg
     run_list: 
       - recipe[yes_chef::postgres]
       - recipe[yes_chef::debug]
+    excludes:
+      - freebsd12
   - name: elk
     run_list:
       - recipe[yes_chef::elasticsearch]
+    excludes:
+      - freebsd12
 
