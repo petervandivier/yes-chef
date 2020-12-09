@@ -11,6 +11,9 @@ platforms:
       box: bento/centos-7.7
     run_list: 
       - recipe[yes_chef::default]
+  - name: freebsd11
+    driver:
+      box: bento/freebsd-11
   - name: freebsd12
     driver:
       box: bento/freebsd-12.2
@@ -29,16 +32,19 @@ suites:
       - recipe[yes_chef::backup]
       - recipe[yes_chef::debug]
     excludes:
+      - freebsd11
       - freebsd12
   - name: trg
     run_list: 
       - recipe[yes_chef::postgres]
       - recipe[yes_chef::debug]
     excludes:
+      - freebsd11
       - freebsd12
   - name: elk
     run_list:
       - recipe[yes_chef::elasticsearch]
     excludes:
+      - freebsd11
       - freebsd12
 
