@@ -21,12 +21,9 @@ platforms:
 suites:
   - name: jtv  # just_the_vm
   - name: mvpg # minimum viable postgres
-#     driver_config:
-#       # https://stackoverflow.com/a/38677478/4709762
-#       # https://stackoverflow.com/q/15934364/4709762
-#       # https://dba.stackexchange.com/a/54602/68127 <-- TODO: correct this 💩
-#       network:
-#         - ["forwarded_port", {guest: 5432, host: 54321}]
+    driver_config:
+      network:
+        - ["forwarded_port", {guest: 5432, host: 54321}]
     run_list: 
       - recipe[yes_chef::postgres]
       - recipe[yes_chef::backup]

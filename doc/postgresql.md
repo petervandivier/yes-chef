@@ -33,7 +33,16 @@ host    all             all             ::1/128                 trust
 
 ## Port Forwarding
 
-TODO: Port forwarding & pg_hba.conf
+You can [configure port-forwarding](https://stackoverflow.com/a/38677478/4709762) inside a newly `create`d VM. If you get back the following error when to the postgres service...
+
+```
+$ psql "postgresql://postgres@127.0.0.1:54321/postgres"
+psql: error: server closed the connection unexpectedly
+        This probably means the server terminated abnormally
+        before or while processing the request.
+$
+```
+...then you may need to add a `listen_address` to your postgresql.conf (as written up [here](https://dba.stackexchange.com/a/282540/68127)).
 
 # Postgres PITR
 

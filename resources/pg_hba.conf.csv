@@ -2,3 +2,4 @@ type,db,user,method,address,comment
 local,all,all,trust,,
 host,all,all,trust,"127.0.0.1/32","IPv4 local connections:"
 host,all,all,trust,"::1/128","IPv6 local connections:"
+host,all,postgres,trust,"10.0.2.0/24","vagrant host-to-guest inbound"

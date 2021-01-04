@@ -29,7 +29,10 @@ default['pg']['conf']['file']['lines'] = [
 # TODO: segregate static conf. vals to .csv resource
 # TODO: refactor conf dictionary to hash of type {:key, :value} 
 #         (instead of {key: foo, value: bar} )
-    {key: 'track_commit_timestamp', value: 'on'} 
+    {key: 'track_commit_timestamp', value: 'on'},
+# host->guest is always 10.0.2.15 for test kitchen
+#   https://superuser.com/a/310745/457020
+    {key: 'listen_addresses',       value: 'localhost,10.0.2.15'} 
 ]
 
 default['pg']['conf']['hba']['path']    = "#{pg_conf_dir}/pg_hba.conf"
