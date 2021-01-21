@@ -1,11 +1,17 @@
 
 # https://serverfault.com/a/627682/401889
-template '/etc/profile.d/bash_profile.sh' do 
-    source 'bash_profile.sh'
+if node['platform_family'] == 'rhel'
+    template '/etc/profile.d/bash_profile.sh' do 
+        source 'bash_profile.sh'
+    end
+    package 'epel-release'
 end
 
-# https://stackoverflow.com/a/45745410/4709762
-yum_package 'epel-release' do
-end
-yum_package 'jq' do
+%w[
+    jq
+    bash
+].each do |pkg|
+    package pkg do 
+        action :install
+    end
 end

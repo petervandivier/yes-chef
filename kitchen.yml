@@ -18,12 +18,15 @@ platforms:
       pre_converge:
       - remote: sudo pkg update
     run_list: 
-      - recipe[yes_chef::default_freebsd]
+      - recipe[yes_chef::default]
   - name: freebsd12
     driver:
       box: bento/freebsd-12.2
+    lifecycle:
+      pre_converge:
+      - remote: sudo pkg update
     run_list: 
-      - recipe[yes_chef::default_freebsd]
+      - recipe[yes_chef::default]
 
 suites:
   - name: jtv  # just_the_vm
