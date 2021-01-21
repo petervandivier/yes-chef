@@ -14,9 +14,16 @@ platforms:
   - name: freebsd11 
     driver:
       box: bento/freebsd-11.4
+    lifecycle:
+      pre_converge:
+      - remote: sudo pkg update
+    run_list: 
+      - recipe[yes_chef::default_freebsd]
   - name: freebsd12
     driver:
       box: bento/freebsd-12.2
+    run_list: 
+      - recipe[yes_chef::default_freebsd]
 
 suites:
   - name: jtv  # just_the_vm
