@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 RED='\[\e[1;31m\]'
 BOLDYELLOW='\[\e[1;33m\]'
