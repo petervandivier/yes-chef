@@ -11,6 +11,11 @@ platforms:
       box: bento/centos-7.7
     run_list: 
       - recipe[yes_chef::default]
+  - name: rhel8
+    driver:
+      box: generic/rhel8
+    run_list: 
+      - recipe[yes_chef::default]
   - name: freebsd11 
     driver:
       box: bento/freebsd-11.4
