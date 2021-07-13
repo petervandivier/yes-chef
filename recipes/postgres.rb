@@ -12,7 +12,7 @@ conf_file = node['pg']['conf']['file']['path']
 hba_file  = node['pg']['conf']['hba']['path']
 
 get_pg = <<EOF
-yes | rpm -Uvh https://yum.postgresql.org/10/redhat/rhel-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+yes | rpm -Uvh https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 # https://repmgr.org/docs/4.0/installation-packages.html
 # yum install -y https://rpm.2ndquadrant.com/site/content/2ndquadrant-repo-10-1-1.el7.noarch.rpm
 yum install -y postgresql10-server postgresql10 postgresql10-contrib repmgr10
