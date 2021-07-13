@@ -30,6 +30,13 @@ See commit `5b7d50fd4521ebcf75487fea06d50b7be9d061e8` for the last remnants of t
 
 I'm moving a bit faster now, but I'm trying to keep up with this README as a Useful Document for Future @petervandivier. 
 
+Since `69bad21caec5e2b55a1e3faf34157eeb66e42f1b`, we've been able to connect to the postgresql service running in vagrant from the host. 
+
+```bash
+pgvagrant='postgres://postgres@127.0.0.1:54321'
+psql $pgvagrant 
+```
+
 ## ELK
 
 By commit `91893ab2a16e6215aa7b9c2ec0f28c37ee2a33bd`, we have an Elasticsearch VM with some barebones testing. 
